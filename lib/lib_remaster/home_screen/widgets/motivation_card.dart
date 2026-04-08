@@ -30,13 +30,7 @@ class _MotivationCardState extends State<MotivationCard> {
           child: Stack(
             children: [
               Positioned.fill(
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(15),
-                  child: Image.asset(
-                    'assets/sunny/Mask group.png',
-                    fit: BoxFit.cover,
-                  ),
-                ),
+                child: ClipRRect(borderRadius: BorderRadius.circular(15)),
               ),
               Positioned(
                 child: Center(

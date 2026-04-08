@@ -7,9 +7,7 @@ final getIt = GetIt.instance;
 
 Future<void> setupServiceLocator() async {
   getIt.registerLazySingleton<DioClient>(() {
-    return DioClient(
-      baseUrl: 'https://api.openweathermap.org/data/3.0/onecall',
-    );
+    return DioClient(baseUrl: 'https://api.openweathermap.org/data/2.5');
   });
 
   getIt.registerLazySingleton<WeatherApiService>(() {

@@ -46,7 +46,7 @@ class _MainScreenState extends State<MainScreen> {
         actions: [
           GestureDetector(
             onDoubleTap: () {
-              getIt<WeatherApiService>().getOverView(
+              getIt<WeatherApiService>().getWeather(
                 lat: 51.509865,
                 lon: -0.118092,
               );
