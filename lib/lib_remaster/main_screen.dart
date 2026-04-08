@@ -1,8 +1,7 @@
 import 'package:animated_notch_bottom_bar/animated_notch_bottom_bar/animated_notch_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:weather_app/lib_remaster/activities_screen.dart';
-import 'package:weather_app/lib_remaster/api_services/dio.dart';
-import 'package:weather_app/lib_remaster/api_services/whether_api_secrvice.dart';
+import 'package:weather_app/lib_remaster/api_services/weather_api_service.dart';
 import 'package:weather_app/lib_remaster/home_screen/home_screen.dart';
 import 'package:weather_app/lib_remaster/reflection_screen.dart';
 

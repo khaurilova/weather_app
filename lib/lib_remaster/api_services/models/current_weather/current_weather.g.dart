@@ -16,7 +16,9 @@ CurrentWeather _$CurrentWeatherFromJson(Map<String, dynamic> json) =>
       main: MainData.fromJson(json['main'] as Map<String, dynamic>),
       visibility: (json['visibility'] as num).toInt(),
       wind: WindData.fromJson(json['wind'] as Map<String, dynamic>),
-      rain: RainData.fromJson(json['rain'] as Map<String, dynamic>),
+      rain: (json['rain'] as Map<String, dynamic>?) == null
+          ? null
+          : RainData.fromJson(json['rain'] as Map<String, dynamic>),
       clouds: CloudsData.fromJson(json['clouds'] as Map<String, dynamic>),
       dt: (json['dt'] as num).toInt(),
       sys: SysData.fromJson(json['sys'] as Map<String, dynamic>),
@@ -53,7 +55,7 @@ Map<String, dynamic> _$CoordsDataToJson(CoordsData instance) =>
     <String, dynamic>{'lon': instance.lon, 'lat': instance.lat};
 
 RainData _$RainDataFromJson(Map<String, dynamic> json) =>
-    RainData(hour: (json['1h'] as num).toDouble());
+    RainData(hour: (json['1h'] as num?)?.toDouble());
 
 Map<String, dynamic> _$RainDataToJson(RainData instance) => <String, dynamic>{
   '1h': instance.hour,

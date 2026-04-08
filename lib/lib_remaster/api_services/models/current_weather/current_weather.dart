@@ -15,7 +15,7 @@ class CurrentWeather {
   final MainData main;
   final int visibility;
   final WindData wind;
-  final RainData rain;
+  final RainData? rain;
   final CloudsData clouds;
   final int dt;
   final SysData sys;
@@ -31,7 +31,7 @@ class CurrentWeather {
     required this.main,
     required this.visibility,
     required this.wind,
-    required this.rain,
+    this.rain,
     required this.clouds,
     required this.dt,
     required this.sys,
@@ -61,9 +61,9 @@ class CoordsData {
 @JsonSerializable()
 class RainData {
   @JsonKey(name: '1h')
-  final double hour;
+  final double? hour;
 
-  RainData({required this.hour});
+  RainData({this.hour});
 
   factory RainData.fromJson(Map<String, dynamic> json) =>
       _$RainDataFromJson(json);

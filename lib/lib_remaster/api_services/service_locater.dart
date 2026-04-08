@@ -1,5 +1,5 @@
 import 'package:get_it/get_it.dart';
-import 'package:weather_app/lib_remaster/api_services/whether_api_secrvice.dart';
+import 'package:weather_app/lib_remaster/api_services/weather_api_service.dart';
 
 import 'dio.dart';
 

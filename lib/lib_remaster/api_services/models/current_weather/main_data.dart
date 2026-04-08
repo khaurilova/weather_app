@@ -13,9 +13,9 @@ class MainData {
   final int pressure;
   final int humidity;
   @JsonKey(name: 'sea_level')
-  final int seaLevel;
+  final int? seaLevel;
   @JsonKey(name: 'grnd_level')
-  final int grndLevel;
+  final int? grndLevel;
 
   MainData({
     required this.temp,
@@ -24,8 +24,8 @@ class MainData {
     required this.tempMax,
     required this.pressure,
     required this.humidity,
-    required this.seaLevel,
-    required this.grndLevel,
+    this.seaLevel,
+    this.grndLevel,
   });
 
   factory MainData.fromJson(Map<String, dynamic> json) =>

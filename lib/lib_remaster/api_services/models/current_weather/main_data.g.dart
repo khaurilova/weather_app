@@ -13,8 +13,8 @@ MainData _$MainDataFromJson(Map<String, dynamic> json) => MainData(
   tempMax: (json['temp_max'] as num).toDouble(),
   pressure: (json['pressure'] as num).toInt(),
   humidity: (json['humidity'] as num).toInt(),
-  seaLevel: (json['sea_level'] as num).toInt(),
-  grndLevel: (json['grnd_level'] as num).toInt(),
+  seaLevel: (json['sea_level'] as num?)?.toInt(),
+  grndLevel: (json['grnd_level'] as num?)?.toInt(),
 );
 
 Map<String, dynamic> _$MainDataToJson(MainData instance) => <String, dynamic>{
