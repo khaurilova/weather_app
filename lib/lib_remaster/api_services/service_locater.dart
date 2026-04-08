@@ -1,0 +1,18 @@
+import 'package:get_it/get_it.dart';
+import 'package:weather_app/lib_remaster/api_services/whether_api_secrvice.dart';
+
+import 'dio.dart';
+
+final getIt = GetIt.instance;
+
+Future<void> setupServiceLocator() async {
+  getIt.registerLazySingleton<DioClient>(() {
+    return DioClient(
+      baseUrl: 'https://api.openweathermap.org/data/3.0/onecall',
+    );
+  });
+
+  getIt.registerLazySingleton<WeatherApiService>(() {
+    return WeatherApiService(dio: getIt<DioClient>().dio);
+  });
+}
