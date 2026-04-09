@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:weather_app/lib_remaster/api_services/dio.dart';
 import 'package:weather_app/lib_remaster/api_services/models/models.dart'
     show CurrentWeather;
@@ -8,7 +9,7 @@ class WeatherApiService {
   final Dio dio;
   WeatherApiService({required this.dio});
 
-  final String apiKey = '2f3c7d1327560ac385d3596a066b7ac6';
+  final String apiKey = dotenv.env['OPENWEATHER_API_KEY'] ?? '';
   final String baseUrl = getIt<DioClient>().baseUrl;
 
   Future<CurrentWeather> getWeather({
@@ -19,6 +20,11 @@ class WeatherApiService {
     String? lang,
   }) async {
     try {
+      if (apiKey.isEmpty) {
+        throw const FormatException(
+          'OPENWEATHER_API_KEY is missing in the .env file',
+        );
+      }
       final response = await dio.get(
         '$baseUrl/weather?lat=$lat&lon=$lon&appid=$apiKey&units=$units&mode=$mode&lang=$lang',
       );
