@@ -16,7 +16,7 @@ CurrentWeather _$CurrentWeatherFromJson(Map<String, dynamic> json) =>
       main: MainData.fromJson(json['main'] as Map<String, dynamic>),
       visibility: (json['visibility'] as num).toInt(),
       wind: WindData.fromJson(json['wind'] as Map<String, dynamic>),
-      rain: (json['rain'] as Map<String, dynamic>?) == null
+      rain: json['rain'] == null
           ? null
           : RainData.fromJson(json['rain'] as Map<String, dynamic>),
       clouds: CloudsData.fromJson(json['clouds'] as Map<String, dynamic>),

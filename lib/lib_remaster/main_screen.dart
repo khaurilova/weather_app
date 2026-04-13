@@ -1,10 +1,12 @@
 import 'package:animated_notch_bottom_bar/animated_notch_bottom_bar/animated_notch_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:weather_app/lib_remaster/activities_screen.dart';
+import 'package:weather_app/lib_remaster/api_services/models/current_weather/current_weather.dart';
 import 'package:weather_app/lib_remaster/api_services/weather_api_service.dart';
+import 'package:weather_app/lib_remaster/blocs/weather_bloc/weather_bloc.dart';
 import 'package:weather_app/lib_remaster/home_screen/home_screen.dart';
 import 'package:weather_app/lib_remaster/reflection_screen.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'api_services/service_locater.dart';
 
 class MainScreen extends StatefulWidget {
@@ -15,6 +17,7 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
+  CurrentWeather? weatherData;
   final _controller = NotchBottomBarController();
   final _pageController = PageController(initialPage: 0);
 
@@ -44,81 +47,155 @@ class _MainScreenState extends State<MainScreen> {
         automaticallyImplyLeading: false,
         actions: [
           GestureDetector(
-            onDoubleTap: () {
-              getIt<WeatherApiService>().getWeather(
-                lat: 51.509865,
-                lon: -0.118092,
+            onTap: () {
+              context.read<WeatherBloc>().add(
+                const WeatherEvent.getZipWeather(zip: 10456),
               );
             },
-            child: Icon(Icons.settings),
-          ),
-        ],
-      ),
-      body: PageView(
-        controller: _pageController,
-        physics: const NeverScrollableScrollPhysics(),
-        children: List.generate(
-          bottomBarPages.length,
-          (index) => bottomBarPages[index],
-        ),
-      ),
-
-      bottomNavigationBar: AnimatedNotchBottomBar(
-        notchBottomBarController: _controller,
-        color: Color(0xff333333),
-        bottomBarItems: [
-          const BottomBarItem(
-            inActiveItem: Icon(
-              Icons.home_outlined,
-              color: Color.fromARGB(255, 255, 255, 255),
-            ),
-            activeItem: Icon(
-              Icons.home_filled,
-              color: Color.fromARGB(255, 255, 255, 255),
-            ),
-          ),
-          const BottomBarItem(
-            inActiveItem: Icon(
-              Icons.star_outline,
-              color: Color.fromARGB(255, 255, 255, 255),
-            ),
-            activeItem: Stack(
-              children: [
-                DecoratedBox(
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Color(0xff333333),
-                  ),
-                ),
-                Icon(Icons.star, color: Color(0xff33433)),
-              ],
-            ),
-          ),
-          const BottomBarItem(
-            inActiveItem: Icon(
-              Icons.star,
-              color: Color.fromARGB(255, 255, 255, 255),
-            ),
-            activeItem: Icon(
-              Icons.star,
-              color: Color.fromARGB(255, 255, 255, 255),
+            onDoubleTap: () {
+              context.read<WeatherBloc>().add(
+                const WeatherEvent.getWeather(lat: 51.509865, lon: -0.118092),
+              );
+            },
+            child: const Padding(
+              padding: EdgeInsets.only(right: 16),
+              child: Icon(Icons.settings),
             ),
           ),
         ],
-        onTap: (index) {
-          _pageController.jumpToPage(index);
+      ),
+      body: BlocConsumer<WeatherBloc, WeatherState>(
+        listener: (context, state) {
+          state.whenOrNull(
+            weatherObtained: (_) {
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(const SnackBar(content: Text('Данные получены')));
+            },
+          );
         },
-        kIconSize: 24,
-        kBottomRadius: 15,
+        builder: (context, state) {
+          return state.when(
+            initial: () => const Center(child: SizedBox.shrink()),
+
+            loading: () => const Center(child: CircularProgressIndicator()),
+
+            weatherObtained: (weather) => Container(
+              width: 360,
+              height: 250,
+              decoration: BoxDecoration(
+                color: const Color.fromARGB(255, 249, 239, 236),
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('Temperature: ${weather.main.temp}'),
+                  Text('Feels like: ${weather.main.feelsLike}'),
+                ],
+              ),
+            ),
+          );
+        },
       ),
-      // bottomNavigationBar: BottomNavigationBar(
-      //   items: [
-      //     BottomNavigationBarItem(
-      //         icon: Icon(Icons.public_sharp), label: 'hello'),
-      //     BottomNavigationBarItem(
-      //         icon: Icon(Icons.public_sharp), label: 'hello'),
-      //   ],
-      // ),
     );
   }
 }
+         
+
+      
+      
+      // weatherData != null
+      //     ? SizedBox(
+      //         width: 360,
+      //         height: 250,
+      //         child: DecoratedBox(
+      //           decoration: BoxDecoration(
+      //             color: const Color.fromARGB(255, 249, 239, 236),
+      //             borderRadius: BorderRadius.circular(15),
+      //           ),
+      //           child: Column(
+      //             mainAxisAlignment: MainAxisAlignment.start,
+      //             children: [
+      //               if (weatherData != null)
+      //                 Column(
+      //                   children: [
+      //                     Text('Tempreture: ${weatherData!.main.temp},'),
+      //                     Text('Feels like: ${weatherData!.main.feelsLike}'),
+      //                   ],
+      //                 ),
+      //             ],
+      //           ),
+      //         ),
+      //       )
+      //     : SizedBox.shrink(),
+    
+    //       PageView(
+    //         controller: _pageController,
+    //         physics: const NeverScrollableScrollPhysics(),
+    //         children: List.generate(
+    //           bottomBarPages.length,
+    //           (index) => bottomBarPages[index],
+    //         ),
+    //       ),
+
+    //       bottomNavigationBar: AnimatedNotchBottomBar(
+    //         notchBottomBarController: _controller,
+    //         color: Color(0xff333333),
+    //         bottomBarItems: [
+    //           const BottomBarItem(
+    //             inActiveItem: Icon(
+    //               Icons.home_outlined,
+    //               color: Color.fromARGB(255, 255, 255, 255),
+    //             ),
+    //             activeItem: Icon(
+    //               Icons.home_filled,
+    //               color: Color.fromARGB(255, 255, 255, 255),
+    //             ),
+    //           ),
+    //           const BottomBarItem(
+    //             inActiveItem: Icon(
+    //               Icons.star_outline,
+    //               color: Color.fromARGB(255, 255, 255, 255),
+    //             ),
+    //             activeItem: Stack(
+    //               children: [
+    //                 DecoratedBox(
+    //                   decoration: BoxDecoration(
+    //                     shape: BoxShape.circle,
+    //                     color: Color(0xff333333),
+    //                   ),
+    //                 ),
+    //                 Icon(Icons.star, color: Color(0xff33433)),
+    //               ],
+    //             ),
+    //           ),
+    //           const BottomBarItem(
+    //             inActiveItem: Icon(
+    //               Icons.star,
+    //               color: Color.fromARGB(255, 255, 255, 255),
+    //             ),
+    //             activeItem: Icon(
+    //               Icons.star,
+    //               color: Color.fromARGB(255, 255, 255, 255),
+    //             ),
+    //           ),
+    //         ],
+    //         onTap: (index) {
+    //           _pageController.jumpToPage(index);
+    //         },
+    //         kIconSize: 24,
+    //         kBottomRadius: 15,
+    //       ),
+    //       // bottomNavigationBar: BottomNavigationBar(
+    //       //   items: [
+    //       //     BottomNavigationBarItem(
+    //       //         icon: Icon(Icons.public_sharp), label: 'hello'),
+    //       //     BottomNavigationBarItem(
+    //       //         icon: Icon(Icons.public_sharp), label: 'hello'),
+    //       //   ],
+    //       // ),
+    //     );
+
+
+

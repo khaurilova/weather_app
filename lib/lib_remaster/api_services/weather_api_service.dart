@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:weather_app/lib_remaster/api_services/dio.dart';
 import 'package:weather_app/lib_remaster/api_services/models/models.dart'
     show CurrentWeather;
@@ -37,6 +38,35 @@ class WeatherApiService {
       }
       final ourData = CurrentWeather.fromJson(data);
       print(ourData);
+      return ourData;
+    } catch (e) {
+      throw Exception();
+    }
+  }
+
+  Future<CurrentWeather> getZipWeather({
+    required int zip,
+    String? mode,
+    String? lang,
+    String? units,
+  }) async {
+    try {
+      if (apiKey.isEmpty) {
+        throw const FormatException(
+          'OPENWEATHER_API_KEY is missing in the .env file',
+        );
+      }
+      final response = await dio.get(
+        '$baseUrl/weather?zip=$zip&appid=$apiKey&units=$units&mode=$mode&lang=$lang',
+      );
+      print(response);
+      final data = response.data;
+      if (data is! Map<String, dynamic>) {
+        throw FormatException(
+          'Expected weather response as JSON object, got ${data.runtimeType}',
+        );
+      }
+      final ourData = CurrentWeather.fromJson(data);
       return ourData;
     } catch (e) {
       throw Exception();
