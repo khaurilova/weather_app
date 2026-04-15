@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:weather_app/lib_remaster/api_services/service_locater.dart';
-import 'package:weather_app/lib_remaster/blocs/weather_bloc/weather_bloc.dart';
-import 'package:weather_app/lib_remaster/main_screen.dart';
+import 'package:weather_app/service_locater.dart';
+import 'package:weather_app/blocs/blocs.dart';
+import 'package:weather_app/screens/main_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
