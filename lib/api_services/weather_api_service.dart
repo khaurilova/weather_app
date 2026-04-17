@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:weather_app/api_services/models/forecast_weather.dart';
 import 'package:weather_app/api_services/models/models.dart';
 import 'package:weather_app/dio.dart';
 
@@ -66,6 +67,37 @@ class WeatherApiService {
         );
       }
       final ourData = CurrentWeather.fromJson(data);
+      return ourData;
+    } catch (e) {
+      throw Exception();
+    }
+  }
+
+  Future<ForecastWeather> getForecast({
+    required double lat,
+    required double lon,
+    String? mode,
+    String? lang,
+    String? units,
+    int? cnt,
+  }) async {
+    try {
+      if (apiKey.isEmpty) {
+        throw const FormatException(
+          'OPENWEATHER_API_KEY is missing in the .env file',
+        );
+      }
+      final response = await dio.get(
+        '$baseUrl/forecast?lat=$lat&lon=$lon&appid=$apiKey',
+      );
+      print(response);
+      final data = response.data;
+      if (data is! Map<String, dynamic>) {
+        throw FormatException(
+          'Expected weather response as JSON object, got ${data.runtimeType}',
+        );
+      }
+      final ourData = ForecastWeather.fromJson(data);
       return ourData;
     } catch (e) {
       throw Exception();

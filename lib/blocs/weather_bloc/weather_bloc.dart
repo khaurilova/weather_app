@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:weather_app/api_services/models/current_weather/current_weather.dart';
+import 'package:weather_app/api_services/models/forecast_weather.dart';
 import 'package:weather_app/service_locater.dart';
 import 'package:weather_app/repositories/weather_repository.dart';
 

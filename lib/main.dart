@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:weather_app/blocs/forecast_bloc/forecast_bloc.dart';
 import 'package:weather_app/service_locater.dart';
 import 'package:weather_app/blocs/blocs.dart';
 import 'package:weather_app/screens/main_screen.dart';
@@ -62,8 +63,11 @@ Future<void> main() async {
 
   runApp(
     MaterialApp(
-      home: BlocProvider<WeatherBloc>(
-        create: (context) => WeatherBloc(),
+      home: MultiBlocProvider(
+        providers: [
+          BlocProvider<WeatherBloc>(create: (context) => WeatherBloc()),
+          BlocProvider<ForecastBloc>(create: (context) => ForecastBloc()),
+        ],
         child: MainScreen(),
       ),
     ),

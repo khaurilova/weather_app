@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:weather_app/api_services/models/current_weather/current_weather.dart';
+import 'package:weather_app/blocs/forecast_bloc/forecast_bloc.dart';
 import 'package:weather_app/blocs/weather_bloc/weather_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:weather_app/screens/forecast_bloc_widget.dart';
+import 'package:weather_app/common_widgets/weather_card_widget.dart';
+import 'package:weather_app/screens/weather_widget.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -41,6 +45,11 @@ class _MainScreenState extends State<MainScreen> {
         automaticallyImplyLeading: false,
         actions: [
           GestureDetector(
+            onLongPress: () {
+              context.read<ForecastBloc>().add(
+                const ForecastEvent.getForecast(lat: 51.509865, lon: -0.118092),
+              );
+            },
             onTap: () {
               context.read<WeatherBloc>().add(
                 const WeatherEvent.getZipWeather(zip: 10456),
@@ -58,39 +67,17 @@ class _MainScreenState extends State<MainScreen> {
           ),
         ],
       ),
-      body: BlocConsumer<WeatherBloc, WeatherState>(
-        listener: (context, state) {
-          state.whenOrNull(
-            weatherObtained: (_) {
-              ScaffoldMessenger.of(
-                context,
-              ).showSnackBar(const SnackBar(content: Text('Данные получены')));
-            },
-          );
-        },
-        builder: (context, state) {
-          return state.when(
-            initial: () => const Center(child: SizedBox.shrink()),
-
-            loading: () => const Center(child: CircularProgressIndicator()),
-
-            weatherObtained: (weather) => Container(
-              width: 360,
-              height: 250,
-              decoration: BoxDecoration(
-                color: const Color.fromARGB(255, 249, 239, 236),
-                borderRadius: BorderRadius.circular(15),
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text('Temperature: ${weather.main.temp}'),
-                  Text('Feels like: ${weather.main.feelsLike}'),
-                ],
-              ),
-            ),
-          );
-        },
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Row(
+            children: [
+              Expanded(child: WeatherWidget()),
+              SizedBox(height: 10),
+              Expanded(child: ForecastBlocWidget()),
+            ],
+          ),
+        ],
       ),
     );
   }

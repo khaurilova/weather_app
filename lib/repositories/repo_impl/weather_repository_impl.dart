@@ -1,4 +1,5 @@
 import 'package:weather_app/api_services/models/current_weather/current_weather.dart';
+import 'package:weather_app/api_services/models/forecast_weather.dart';
 import 'package:weather_app/api_services/weather_api_service.dart';
 import 'package:weather_app/repositories/weather_repository.dart';
 
@@ -32,6 +33,23 @@ class WeatherRepositoryImpl implements WeatherRepository {
   }) async {
     try {
       final response = await api.getZipWeather(zip: zip);
+      return response;
+    } on Exception {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<ForecastWeather> getForecast({
+    required double lat,
+    required double lon,
+    String? units,
+    String? mode,
+    String? lang,
+    int? cnt,
+  }) async {
+    try {
+      final response = await api.getForecast(lat: lat, lon: lon);
       return response;
     } on Exception {
       rethrow;
