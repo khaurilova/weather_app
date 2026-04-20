@@ -5,6 +5,8 @@ import 'package:weather_app/blocs/weather_bloc/weather_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weather_app/screens/forecast_bloc_widget.dart';
 import 'package:weather_app/common_widgets/weather_card_widget.dart';
+import 'package:weather_app/screens/main_screen/widgets/animated_tab_bar.dart';
+import 'package:weather_app/screens/main_screen/widgets/tab_bar_item.dart';
 import 'package:weather_app/screens/weather_widget.dart';
 
 class MainScreen extends StatefulWidget {
@@ -33,51 +35,47 @@ class _MainScreenState extends State<MainScreen> {
     //   const ReflectionScreen(),
     //   const ActivitiesScreen(),
     // ];
-    return Scaffold(
-      appBar: AppBar(
-        actionsPadding: EdgeInsets.only(right: 15),
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        title: Align(
-          alignment: AlignmentGeometry.centerLeft,
-          child: Text('Good morning, Night City!'),
-        ),
-        automaticallyImplyLeading: false,
-        actions: [
-          GestureDetector(
-            onLongPress: () {
-              context.read<ForecastBloc>().add(
-                const ForecastEvent.getForecast(lat: 51.509865, lon: -0.118092),
-              );
-            },
-            onTap: () {
-              context.read<WeatherBloc>().add(
-                const WeatherEvent.getZipWeather(zip: 10456),
-              );
-            },
-            onDoubleTap: () {
-              context.read<WeatherBloc>().add(
-                const WeatherEvent.getWeather(lat: 51.509865, lon: -0.118092),
-              );
-            },
-            child: const Padding(
-              padding: EdgeInsets.only(right: 16),
-              child: Icon(Icons.settings),
+    return DefaultTabController(
+      length: 5,
+      child: Scaffold(
+        appBar: AppBar(
+          bottom: AnimatedTabBar(preferredSize: Size.fromHeight(100)),
+          actionsPadding: EdgeInsets.only(right: 15),
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+          title: Align(
+            alignment: AlignmentGeometry.centerLeft,
+            child: Text('Good morning, Night City!'),
+          ),
+          automaticallyImplyLeading: false,
+          actions: [
+            GestureDetector(
+              onLongPress: () {
+                context.read<ForecastBloc>().add(
+                  const ForecastEvent.getForecast(
+                    lat: 51.509865,
+                    lon: -0.118092,
+                  ),
+                );
+              },
+              onTap: () {
+                context.read<WeatherBloc>().add(
+                  const WeatherEvent.getZipWeather(zip: 10456),
+                );
+              },
+              onDoubleTap: () {
+                context.read<WeatherBloc>().add(
+                  const WeatherEvent.getWeather(lat: 51.509865, lon: -0.118092),
+                );
+              },
+              child: const Padding(
+                padding: EdgeInsets.only(right: 16),
+                child: Icon(Icons.settings),
+              ),
             ),
-          ),
-        ],
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Row(
-            children: [
-              Expanded(child: WeatherWidget()),
-              SizedBox(height: 10),
-              Expanded(child: ForecastBlocWidget()),
-            ],
-          ),
-        ],
+          ],
+        ),
+        body: SizedBox.shrink(),
       ),
     );
   }

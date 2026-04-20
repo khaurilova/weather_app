@@ -17,9 +17,9 @@ class WeatherCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.sizeOf(context).width * .5 - 20,
-      height: MediaQuery.sizeOf(context).height * .3,
+      height: MediaQuery.sizeOf(context).height * .25,
       decoration: BoxDecoration(
-        color: const Color.fromARGB(255, 249, 239, 236),
+        color: const Color.fromARGB(255, 149, 153, 185),
         borderRadius: BorderRadius.circular(15),
       ),
       child: Padding(
