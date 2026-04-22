@@ -15,7 +15,7 @@ class TabBarItem extends StatelessWidget {
     return DecoratedBox(
       decoration: BoxDecoration(
         color: isSelected
-            ? const Color.fromARGB(255, 31, 35, 34)
+            ? const Color.fromARGB(255, 102, 145, 183)
             : Colors.transparent,
 
         border: BoxBorder.all(
@@ -23,9 +23,19 @@ class TabBarItem extends StatelessWidget {
               ? Colors.transparent
               : const Color.fromARGB(255, 31, 35, 34),
         ),
-        borderRadius: BorderRadius.circular(5),
+        borderRadius: BorderRadius.circular(10),
       ),
-      child: Text('$formattedDate'),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Text(
+          '$formattedDate',
+          style: TextStyle(
+            color: isSelected
+                ? const Color.fromARGB(255, 240, 240, 240)
+                : const Color.fromARGB(255, 31, 35, 34),
+          ),
+        ),
+      ),
     );
   }
 }

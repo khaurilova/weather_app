@@ -35,48 +35,42 @@ class _MainScreenState extends State<MainScreen> {
     //   const ReflectionScreen(),
     //   const ActivitiesScreen(),
     // ];
-    return DefaultTabController(
-      length: 5,
-      child: Scaffold(
-        appBar: AppBar(
-          bottom: AnimatedTabBar(preferredSize: Size.fromHeight(100)),
-          actionsPadding: EdgeInsets.only(right: 15),
-          elevation: 0,
-          backgroundColor: Colors.transparent,
-          title: Align(
-            alignment: AlignmentGeometry.centerLeft,
-            child: Text('Good morning, Night City!'),
-          ),
-          automaticallyImplyLeading: false,
-          actions: [
-            GestureDetector(
-              onLongPress: () {
-                context.read<ForecastBloc>().add(
-                  const ForecastEvent.getForecast(
-                    lat: 51.509865,
-                    lon: -0.118092,
-                  ),
-                );
-              },
-              onTap: () {
-                context.read<WeatherBloc>().add(
-                  const WeatherEvent.getZipWeather(zip: 10456),
-                );
-              },
-              onDoubleTap: () {
-                context.read<WeatherBloc>().add(
-                  const WeatherEvent.getWeather(lat: 51.509865, lon: -0.118092),
-                );
-              },
-              child: const Padding(
-                padding: EdgeInsets.only(right: 16),
-                child: Icon(Icons.settings),
-              ),
-            ),
-          ],
+    return Scaffold(
+      appBar: AppBar(
+        bottom: AnimatedTabBar(preferredSize: Size.fromHeight(50)),
+        actionsPadding: EdgeInsets.only(right: 15),
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        title: Align(
+          alignment: AlignmentGeometry.centerLeft,
+          child: Text('Good morning, Night City!'),
         ),
-        body: SizedBox.shrink(),
+        automaticallyImplyLeading: false,
+        actions: [
+          GestureDetector(
+            onLongPress: () {
+              context.read<ForecastBloc>().add(
+                const ForecastEvent.getForecast(lat: 51.509865, lon: -0.118092),
+              );
+            },
+            onTap: () {
+              context.read<WeatherBloc>().add(
+                const WeatherEvent.getZipWeather(zip: 10456),
+              );
+            },
+            onDoubleTap: () {
+              context.read<WeatherBloc>().add(
+                const WeatherEvent.getWeather(lat: 51.509865, lon: -0.118092),
+              );
+            },
+            child: const Padding(
+              padding: EdgeInsets.only(right: 16),
+              child: Icon(Icons.settings),
+            ),
+          ),
+        ],
       ),
+      body: SizedBox.shrink(),
     );
   }
 }
